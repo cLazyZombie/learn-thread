@@ -7,12 +7,23 @@
 </head>
 
 <body>
-  <script type="module">
+  <!-- <script type="module">
     import init, { } from "./learn_thread.js";
     init().then(() => {
       // greet("WebAssembly");
       // run_thread();
     });
+  </script> -->
+  <script src="./learn_thread.js"></script>
+  <script>
+    async function main() {
+      // let wasm = await wasm_bindgen('./learn_thread_bg.wasm');
+      // wasm.run();
+      wasm_bindgen('./learn_thread_bg.wasm').then((wasm) => {
+        wasm.run();
+      });
+    }
+    main();
   </script>
   <p>A greeting from rust looks like...</p>
   <!-- <script src="./coi-serviceworker.js"></script> -->

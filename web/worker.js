@@ -1,20 +1,18 @@
-import init, { add } from './target/learn_thread.js';
+importScripts('./learn_thread.js');
 console.log('worker.js init');
 
-async function init_worker() {
-    await init();
-    console.log('worker.js init done');
-
-    self.onmessage = async event => {
-        console.log('worker receive message', event.data);
-
-        let i = parseInt(event.data);
-        let added = await add(i, i);
-
-        console.log('worker sending added value', added);
-
-        self.postMessage(added);
-    };
+self.onmessage = async event => {
+    let [mem, work] = event.data;
+    wasm_bindgen('./learn_thread_bg.wasm', mem)
+        .then(wasm => {
+            wasm.worker_entry_point(work);
+            close();
+        })
+        .catch(err => {
+            console.error(err);
+            setTimeout(() => {
+                throw err;
+            });
+            throw err;
+        });
 };
-
-init_worker();
