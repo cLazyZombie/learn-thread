@@ -20,7 +20,9 @@
       // let wasm = await wasm_bindgen('./learn_thread_bg.wasm');
       // wasm.run();
       wasm_bindgen('./learn_thread_bg.wasm').then((wasm) => {
-        wasm.run();
+        wasm.run()
+      }).then(() => {
+        console.log("done")
       });
     }
     main();

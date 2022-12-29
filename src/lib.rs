@@ -61,7 +61,7 @@ pub async fn run() -> Result<(), JsValue> {
     // }
     // forget(on_worker_message);
 
-    let (sender, recver) = std::sync::mpsc::channel::<i32>();
+    let (sender, recver) = std::sync::mpsc::sync_channel::<i32>(1);
     spawn(move || {
         log::warn!("sender thread id: {:?}", std::thread::current().id());
 
@@ -84,6 +84,19 @@ pub async fn run() -> Result<(), JsValue> {
         }
     })
     .unwrap();
+
+    // let (sender, recver) = async_channel::bounded::<i32>(1);
+    // let _worker = spawn(move || loop {
+    //     if let Ok(v) = recver.recv_blocking() {
+    //         log::info!("received {}", v);
+    //     }
+    // });
+
+    // for i in 0.. {
+    //     log::info!("try send {}", i);
+    //     sender.send(i).await.unwrap();
+    //     log::info!("send {}", i);
+    // }
 
     let mut i = 0;
     *g.borrow_mut() = Some(Closure::wrap(Box::new(move || {
@@ -109,12 +122,13 @@ pub async fn run() -> Result<(), JsValue> {
         i += 1;
         let text = format!("requestAnimationFrame has been called {} times.", i);
         body().set_text_content(Some(&text));
+        // sender.send(i).await.unwrap();
 
         // Schedule ourself for another requestAnimationFrame callback.
         request_animation_frame(f.borrow().as_ref().unwrap());
     }) as Box<dyn FnMut()>));
 
-    request_animation_frame(g.borrow().as_ref().unwrap());
+    // request_animation_frame(g.borrow().as_ref().unwrap());
 
     Ok(())
 }
