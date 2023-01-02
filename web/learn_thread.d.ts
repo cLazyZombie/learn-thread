@@ -22,6 +22,9 @@ declare namespace wasm_bindgen {
 	* @param {number} addr
 	*/
 	export function worker_entry_point(addr: number): void;
+	/**
+	*/
+	export function run_multithreaded(): void;
 	
 }
 
@@ -31,6 +34,7 @@ declare interface InitOutput {
   readonly main: () => void;
   readonly run: () => number;
   readonly add: (a: number, b: number) => number;
+  readonly run_multithreaded: () => void;
   readonly greet: () => void;
   readonly worker_entry_point: (a: number) => void;
   readonly memory: WebAssembly.Memory;

@@ -3,6 +3,7 @@
 export function main(): void;
 export function run(): number;
 export function add(a: number, b: number): number;
+export function run_multithreaded(): void;
 export function greet(): void;
 export function worker_entry_point(a: number): void;
 export const memory: WebAssembly.Memory;

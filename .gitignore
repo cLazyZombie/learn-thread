@@ -5,3 +5,7 @@ bin/
 pkg/
 /.idea/
 wasm-pack.log
+/web/learn_thread.d.ts
+/web/learn_thread.js
+/web/learn_thread_bg.wasm
+/web/learn_thread_bg.wasm.d.ts
